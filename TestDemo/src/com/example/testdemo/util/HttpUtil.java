@@ -12,13 +12,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
-import android.os.AsyncTask;
-import android.util.Log;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.example.testdemo.bean.OneList;
 import com.example.testdemo.listener.OnDetailContentsFinishListener;
 import com.example.testdemo.listener.OnOneListFinishListener;
+
+import android.os.AsyncTask;
+import android.util.Log;
 
 public class HttpUtil {
 
@@ -86,13 +88,33 @@ public class HttpUtil {
 			@Override
 			protected List<String> doInBackground(Void... params) {
 				try {
-					Document doc=Jsoup.connect(url).timeout(2000).get();
-					Log.i("TAG",doc.toString());
-					/*Elements elements=doc.getElementsByClass("b_panel_schedule");
-					for(Element e:elements){
-						Log.i("TAG", e.text());
-					}*/
-					//contents.add(doc.toString());
+					Document doc=Jsoup.connect(url).timeout(3000).post();
+					Elements elements=doc.getElementsByClass("date-content");
+					for(int i=1;i<elements.size()-2;i++){
+				//////////////////////////////////////时间/////////////////////////
+						String dayAndTima=elements.get(i).select(".date").text();
+						String day=dayAndTima.substring
+								(0,dayAndTima.length()-11);
+						String time=dayAndTima.substring
+								(dayAndTima.length()-11,dayAndTima.length());
+						contents.add("第"+day.substring(1,day.length())+"天");
+						contents.add("日期:"+time);
+						///////////////////////// 内容//////////////////////////////////////////
+		Elements elements2=elements.select(".planboxday").get(i-1).select(".planbox");
+		           for(int j=0;j<elements2.size();j++){
+		        	   String content=elements2.get(j).text();
+		        	   String[] ct=content.split("加载更多图片");
+		        	   contents.add("\t\t"+ct[0]);
+		     Elements elements3=elements2.get(j).select(".img_link");
+		     			if(elements3.size()>0){
+		     			for(int k=0;k<elements3.size();k++){
+		     				String imageUrl=elements3.get(k).select("img").attr("data-src");
+		     				Log.i("SRC","SRC="+imageUrl);
+						contents.add(imageUrl);
+		     			}
+		     		}
+		          }
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

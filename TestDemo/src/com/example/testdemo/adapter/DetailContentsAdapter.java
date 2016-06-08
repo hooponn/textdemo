@@ -3,9 +3,12 @@ package com.example.testdemo.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,10 +19,15 @@ import com.example.testdemo.util.ImageLoader;
 public class DetailContentsAdapter extends BaseAdapter {
 	private Context context;
 	private List<String> list;
+	private int screenWidth;
 	public DetailContentsAdapter(Context context, List<String> list) {
 		this.context = context;
 		this.list = list;
 		ImageLoader.init(context);
+		WindowManager manager=(WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		DisplayMetrics dMetrics=new DisplayMetrics();
+		manager.getDefaultDisplay().getMetrics(dMetrics);
+		screenWidth=dMetrics.widthPixels;
 	}
 	@Override
 	public int getCount() {
@@ -46,13 +54,24 @@ public class DetailContentsAdapter extends BaseAdapter {
 			vh=(ViewHolder) convertView.getTag();
 		}
 		if(list.get(position).contains("http://")&&list.get(position).contains(".jpg")){
-			vh.tv.setVisibility(View.INVISIBLE);
+			vh.tv.setVisibility(View.GONE);
 			vh.iv.setVisibility(View.VISIBLE);
+			vh.iv.getLayoutParams().width=(int) (screenWidth*0.6f);
+			vh.iv.getLayoutParams().height=(int) (screenWidth*0.4f);
+			vh.iv.setX(screenWidth*0.2f);
 			ImageLoader.loadImage(list.get(position), vh.iv);
 		}else{
-			vh.iv.setVisibility(View.INVISIBLE);
+			vh.iv.setVisibility(View.GONE);
 			vh.tv.setVisibility(View.VISIBLE);
-			vh.tv.setText(list.get(position));
+			if(list.get(position).contains("µÚ")&&list.get(position).length()<5){
+				vh.tv.setTextColor(0xffff8866);
+				vh.tv.setTextSize(20);
+				vh.tv.setText(list.get(position));
+			}else{
+				vh.tv.setTextColor(0xff666699);
+				vh.tv.setTextSize(14);
+				vh.tv.setText(list.get(position));
+			}
 		}
 		return convertView;
 	}

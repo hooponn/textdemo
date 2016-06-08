@@ -43,7 +43,7 @@ OneAdapter oAdapter;
 @Override
 	protected void onResume() {
 		super.onResume();
-		HttpUtil.getOneListRequest("±±æ©",2,new OnOneListFinishListener() {
+		HttpUtil.getOneListRequest("∞Õ¿Ë",2,new OnOneListFinishListener() {
 			@Override
 			public void refreshList(List<OneList> onelist) {
 				oAdapter.refresh(onelist);
