@@ -136,7 +136,7 @@ public static void getPlace(final OnPlaceFinishListener listener){
 			protected Place doInBackground(Void... params) {
 				try {
 					Document doc=Jsoup.connect(url).timeout(3000).get();
-					Elements elements=doc.select("div,ctbox");
+					Elements elements=doc.select("div ctbox");
 					Log.i("doc",elements.text());
 					
 					
