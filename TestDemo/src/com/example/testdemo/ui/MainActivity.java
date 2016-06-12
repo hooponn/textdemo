@@ -52,7 +52,7 @@ OneAdapter oAdapter;
 		});
 		HttpUtil.getPlace(new OnPlaceFinishListener() {
 			@Override
-			public void getPlace(Place place) {
+			public void getPlace(List<Place> placeList) {
 				// TODO Auto-generated method stub
 			}
 		});

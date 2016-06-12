@@ -129,11 +129,11 @@ public class HttpUtil {
 		}.execute();
 	}
 public static void getPlace(final OnPlaceFinishListener listener){
-	    new AsyncTask<Void,Void,Place>() {
-	    Place place=new Place();
+	    new AsyncTask<Void,Void,List<Place>>() {
+	    	List<Place> list=new ArrayList<Place>();	
 	    String url="http://travel.qunar.com/place/";
 			@Override
-			protected Place doInBackground(Void... params) {
+			protected List<Place> doInBackground(Void... params) {
 				try {
 					Document doc=Jsoup.connect(url).timeout(3000).get();
 					Elements elements=doc.select("div ctbox");
@@ -149,10 +149,10 @@ public static void getPlace(final OnPlaceFinishListener listener){
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				return place;
+				return list;
 			}
 			@Override
-			protected void onPostExecute(Place result) {
+			protected void onPostExecute(List<Place> result) {
 				listener.getPlace(result);;
 			}
 		}.execute();

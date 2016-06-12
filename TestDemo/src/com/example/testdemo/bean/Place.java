@@ -1,28 +1,32 @@
 package com.example.testdemo.bean;
 
-import java.util.Map;
 
 public class Place {
-private Map<String,String> cities;
-private Map<String,String> countries;
-public Map<String, String> getCities() {
-	return cities;
+private String city;
+private String city_url;
+private String sortLetter;
+public String getCity() {
+	return city;
 }
-public void setCities(Map<String, String> cities) {
-	this.cities = cities;
+public void setCity(String city) {
+	this.city = city;
 }
-public Map<String, String> getCountries() {
-	return countries;
+public String getCity_url() {
+	return city_url;
 }
-public void setCountries(Map<String, String> countries) {
-	this.countries = countries;
+public void setCity_url(String city_url) {
+	this.city_url = city_url;
+}
+public String getSortLetter() {
+	return sortLetter;
+}
+public void setSortLetter(String sortLetter) {
+	this.sortLetter = sortLetter;
 }
 @Override
 public String toString() {
-	return "Place [cities=" + cities + ", countries=" + countries
-			+ ", getCities()=" + getCities() + ", getCountries()="
-			+ getCountries() + ", getClass()=" + getClass() + ", hashCode()="
-			+ hashCode() + ", toString()=" + super.toString() + "]";
+	return "Place [city=" + city + ", city_url=" + city_url + ", sortLetter="
+			+ sortLetter + "]";
 }
 
 }
