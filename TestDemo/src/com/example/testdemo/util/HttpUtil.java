@@ -1,10 +1,12 @@
 package com.example.testdemo.util;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,19 +14,20 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import com.example.testdemo.bean.OneList;
-import com.example.testdemo.listener.OnDetailContentsFinishListener;
-import com.example.testdemo.listener.OnOneListFinishListener;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.testdemo.bean.OneList;
+import com.example.testdemo.bean.Place;
+import com.example.testdemo.listener.OnDetailContentsFinishListener;
+import com.example.testdemo.listener.OnOneListFinishListener;
+import com.example.testdemo.listener.OnPlaceFinishListener;
+
 public class HttpUtil {
 
-	public static void getOneListRequest(final String city,final int pages,
+	public static void getOneListRequest(final String city,final int page,
 			final OnOneListFinishListener listener) {
 		new AsyncTask<Void, Void,List<OneList>>() {
 			@Override
@@ -33,10 +36,10 @@ public class HttpUtil {
 				BufferedReader reader = null;
 				String result = null;
 				StringBuffer sbf = null;
-				for(int p=1;p<pages+1;p++){
+				try {
+					String c=URLEncoder.encode(city, "utf-8");
 					String httpUrl = "http://apis.baidu.com/qunartravel/travellist/travellist"
-							+ "?" + "query="+city+"&page="+String.valueOf(p);
-					try {
+							+ "?query=%22%22"+c+"&page="+String.valueOf(page);
 						URL url = new URL(httpUrl);
 						HttpURLConnection connection = (HttpURLConnection) url
 								.openConnection();
@@ -71,7 +74,6 @@ public class HttpUtil {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				}
 			//	Log.i("TAG","LIST="+list);
 				return list;
 			}
@@ -126,7 +128,35 @@ public class HttpUtil {
 			}
 		}.execute();
 	}
-
+public static void getPlace(final OnPlaceFinishListener listener){
+	    new AsyncTask<Void,Void,Place>() {
+	    Place place=new Place();
+	    String url="http://travel.qunar.com/place/";
+			@Override
+			protected Place doInBackground(Void... params) {
+				try {
+					Document doc=Jsoup.connect(url).timeout(3000).get();
+					Elements elements=doc.select("div,ctbox");
+					Log.i("doc",elements.text());
+					
+					
+					
+					
+					
+					
+					
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return place;
+			}
+			@Override
+			protected void onPostExecute(Place result) {
+				listener.getPlace(result);;
+			}
+		}.execute();
+}
 
 
 

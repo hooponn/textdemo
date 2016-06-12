@@ -177,7 +177,7 @@ public static void loadImage(final String url,final ImageView iv){
 				//将压缩后的图像放到磁盘缓存中存储
 				Editor editor = DiskCache.edit(md5Url);
 				OutputStream os = editor.newOutputStream(0);
-				bitmap.compress(CompressFormat.JPEG, 100, os);
+				bitmap.compress(CompressFormat.JPEG, 80, os);
 				editor.commit();
 				//写日志(可选操作)
 				DiskCache.flush();

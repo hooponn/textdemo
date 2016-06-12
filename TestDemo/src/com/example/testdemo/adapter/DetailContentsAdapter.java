@@ -7,7 +7,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -53,7 +52,7 @@ public class DetailContentsAdapter extends BaseAdapter {
 		}else{
 			vh=(ViewHolder) convertView.getTag();
 		}
-		if(list.get(position).contains("http://")&&list.get(position).contains(".jpg")){
+		if(list.get(position).contains(".jpg")||list.get(position).contains(".png")){
 			vh.tv.setVisibility(View.GONE);
 			vh.iv.setVisibility(View.VISIBLE);
 			vh.iv.getLayoutParams().width=(int) (screenWidth*0.6f);

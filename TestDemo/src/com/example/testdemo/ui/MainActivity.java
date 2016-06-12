@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -15,7 +14,9 @@ import android.widget.ListView;
 import com.example.testdemo.R;
 import com.example.testdemo.adapter.OneAdapter;
 import com.example.testdemo.bean.OneList;
+import com.example.testdemo.bean.Place;
 import com.example.testdemo.listener.OnOneListFinishListener;
+import com.example.testdemo.listener.OnPlaceFinishListener;
 import com.example.testdemo.util.HttpUtil;
 
 public class MainActivity extends Activity {
@@ -43,10 +44,16 @@ OneAdapter oAdapter;
 @Override
 	protected void onResume() {
 		super.onResume();
-		HttpUtil.getOneListRequest("∞Õ¿Ë",2,new OnOneListFinishListener() {
+		HttpUtil.getOneListRequest("",1,new OnOneListFinishListener() {
 			@Override
 			public void refreshList(List<OneList> onelist) {
 				oAdapter.refresh(onelist);
+			}
+		});
+		HttpUtil.getPlace(new OnPlaceFinishListener() {
+			@Override
+			public void getPlace(Place place) {
+				// TODO Auto-generated method stub
 			}
 		});
 	}
