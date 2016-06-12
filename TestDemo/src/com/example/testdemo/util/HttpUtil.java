@@ -14,16 +14,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.testdemo.bean.OneList;
 import com.example.testdemo.bean.Place;
 import com.example.testdemo.listener.OnDetailContentsFinishListener;
 import com.example.testdemo.listener.OnOneListFinishListener;
 import com.example.testdemo.listener.OnPlaceFinishListener;
+
+import android.os.AsyncTask;
+import android.util.Log;
+import net.sourceforge.pinyin4j.PinyinHelper;
 
 public class HttpUtil {
 
@@ -135,17 +137,30 @@ public static void getPlace(final OnPlaceFinishListener listener){
 			@Override
 			protected List<Place> doInBackground(Void... params) {
 				try {
-					Document doc=Jsoup.connect(url).timeout(3000).get();
-					Elements elements=doc.select("div ctbox");
-					Log.i("doc",elements.text());
-					
-					
-					
-					
-					
-					
-					
-					
+					Document doc=Jsoup.connect(url).
+			data("query","Java").userAgent("Mozilla").cookie("auth","token").timeout(3000).get();
+				Elements elements=doc.select(".sub_list");
+					for(int i=0;i<elements.size();i++){
+					  for(int j=0;j<elements.get(i).select(".link").size();j++){
+						  Place place=new Place();
+						  place.setCity(elements.get(i).select(".link").get(j).text());
+						  place.setSortLetter(getFirstChar(place.getCity()));
+						  place.setCity_url(elements.get(i).select(".link").get(j).attr("href"));
+						  list.add(place);
+					  }
+					}
+					Elements elements2=doc.select(".current").get(9).select(".listbox");
+					for(int i=0;i<elements2.size();i++){
+						for(int j=0;j<elements2.get(i).select(".link").size();j++){
+							Place place=new Place();
+							place.setCity(elements2.get(i).select(".link").get(j).text());
+							place.setSortLetter(getFirstChar(place.getCity()));
+							place.setCity_url(elements2.get(i).select(".link").get(j).attr("href"));
+							list.add(place);
+						}
+					}
+			//Log.i("doc",""+list.size());
+			Log.i("doc",""+list);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -157,7 +172,33 @@ public static void getPlace(final OnPlaceFinishListener listener){
 			}
 		}.execute();
 }
-
+public static String getFirstChar(String value) {  
+    // 首字符  
+    char firstChar = value.charAt(0);  
+    // 首字母分类  
+    String first = null;  
+    // 是否是非汉字  
+    String[] print = PinyinHelper.toHanyuPinyinStringArray(firstChar);  
+    if (print == null) {  
+        // 将小写字母改成大写  
+        if ((firstChar >= 97 && firstChar <= 122)) {  
+            firstChar -= 32;  
+        }  
+        if (firstChar >= 65 && firstChar <= 90) {  
+            first = String.valueOf((char) firstChar);  
+        } else {  
+            // 认为首字符为数字或者特殊字符  
+            first = "#";  
+        }  
+    } else {  
+        // 如果是中文 分类大写字母  
+        first = String.valueOf((char) (print[0].charAt(0) - 32));  
+    }  
+    if (first == null) {  
+        first = "?";  
+    }  
+    return first;  
+} 
 
 
 
