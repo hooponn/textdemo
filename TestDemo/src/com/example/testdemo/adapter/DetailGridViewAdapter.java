@@ -48,8 +48,8 @@ convertView.setTag(vh);
 		}else{
 			vh=(ViewHolder) convertView.getTag();
 		}
-		vh.iv.getLayoutParams().width=(int) (screenWidth*0.8f/3);
-		vh.iv.getLayoutParams().height=(int) (screenWidth*0.8f/3/4*3);
+		vh.iv.getLayoutParams().width=(int) (screenWidth/3);
+		vh.iv.getLayoutParams().height=(int) (screenWidth/4);
 		ImageLoader.loadImage(strs[position],vh.iv);
 		return convertView;
 	}

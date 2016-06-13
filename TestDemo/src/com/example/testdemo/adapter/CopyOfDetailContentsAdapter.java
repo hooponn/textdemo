@@ -47,7 +47,6 @@ public class CopyOfDetailContentsAdapter extends BaseAdapter {
 		vh=new ViewHolder();
 	convertView=LayoutInflater.from(context).inflate(R.layout.detail_lv_item,parent,false);
 	vh.tv=(TextView) convertView.findViewById(R.id.detail_lv_item_tv);
-	vh.iv=(ImageView) convertView.findViewById(R.id.detail_lv_item_iv);
 	convertView.setTag(vh);
 		}else{
 			vh=(ViewHolder) convertView.getTag();

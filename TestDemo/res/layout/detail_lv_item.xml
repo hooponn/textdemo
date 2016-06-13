@@ -12,18 +12,26 @@
         android:paddingRight="3dp"
         android:textSize="14sp"
         android:text="旅游"/>
-    <ImageView
-        android:id="@+id/detail_lv_item_iv"
-        android:layout_width="match_parent"
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher" 
-        android:scaleType="fitXY"/>
-
+        android:scrollbars="none" >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
     <GridView
         android:id="@+id/detail_gridView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="3" >
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="2dp"
+        android:verticalSpacing="2dp"
+        android:numColumns="auto_fit"
+        android:gravity="center"
+        android:scrollbars="none" >
     </GridView>
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </FrameLayout>

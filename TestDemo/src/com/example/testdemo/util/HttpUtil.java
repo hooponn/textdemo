@@ -72,7 +72,7 @@ public class HttpUtil {
 						onelist.setBookUrl(js.getString("bookUrl"));
 						onelist.setHeadImageUrl(js.getString("headImage"));
 						Document doc=Jsoup.connect(onelist.getBookUrl())
-								.userAgent("Mozilla").timeout(3000).post();
+								.userAgent("Mozilla").timeout(2000).post();
 						Elements elements=doc.select(".main_leftbox").first().select(".text");
 						onelist.setAbout("\t\t"+elements.text());
 						list.add(onelist);
