@@ -18,4 +18,12 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher" 
         android:scaleType="fitXY"/>
+
+    <GridView
+        android:id="@+id/detail_gridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="3" >
+    </GridView>
+
 </FrameLayout>

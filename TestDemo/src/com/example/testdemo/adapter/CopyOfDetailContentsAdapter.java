@@ -9,19 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.testdemo.R;
 import com.example.testdemo.util.ImageLoader;
 
-public class DetailContentsAdapter extends BaseAdapter {
+public class CopyOfDetailContentsAdapter extends BaseAdapter {
 	private Context context;
-	private List<String[]> list;
+	private List<String> list;
 	private int screenWidth;
-	private DetailGridViewAdapter dgAdapter;;
-	public DetailContentsAdapter(Context context, List<String[]> list) {
+	public CopyOfDetailContentsAdapter(Context context, List<String> list) {
 		this.context = context;
 		this.list = list;
 		ImageLoader.init(context);
@@ -35,7 +33,7 @@ public class DetailContentsAdapter extends BaseAdapter {
 		return list.size();
 	}
 	@Override
-	public String[] getItem(int position) {
+	public String getItem(int position) {
 		return list.get(position);
 	}
 	@Override
@@ -50,34 +48,33 @@ public class DetailContentsAdapter extends BaseAdapter {
 	convertView=LayoutInflater.from(context).inflate(R.layout.detail_lv_item,parent,false);
 	vh.tv=(TextView) convertView.findViewById(R.id.detail_lv_item_tv);
 	vh.iv=(ImageView) convertView.findViewById(R.id.detail_lv_item_iv);
-	vh.gv=(GridView) convertView.findViewById(R.id.detail_gridView);
 	convertView.setTag(vh);
 		}else{
 			vh=(ViewHolder) convertView.getTag();
 		}
-		if(list.get(position)[0].contains(".jpg")||list.get(position)[0].contains(".png")){
-			vh.iv.setVisibility(View.GONE);
+		if(list.get(position).contains(".jpg")||list.get(position).contains(".png")){
 			vh.tv.setVisibility(View.GONE);
-			vh.gv.setVisibility(View.VISIBLE);
-			dgAdapter=new DetailGridViewAdapter(context,list.get(position));
-			vh.gv.setAdapter(dgAdapter);
+			vh.iv.setVisibility(View.VISIBLE);
+			vh.iv.getLayoutParams().width=(int) (screenWidth*0.6f);
+			vh.iv.getLayoutParams().height=(int) (screenWidth*0.4f);
+			vh.iv.setX(screenWidth*0.2f);
+			ImageLoader.loadImage(list.get(position), vh.iv);
 		}else{
 			vh.iv.setVisibility(View.GONE);
 			vh.tv.setVisibility(View.VISIBLE);
-			vh.gv.setVisibility(View.GONE);
-			if(list.get(position)[0].contains("µÚ")&&list.get(position)[0].length()<5){
+			if(list.get(position).contains("µÚ")&&list.get(position).length()<5){
 				vh.tv.setTextColor(0xffff8866);
 				vh.tv.setTextSize(20);
-				vh.tv.setText(list.get(position)[0]);
+				vh.tv.setText(list.get(position));
 			}else{
 				vh.tv.setTextColor(0xff666699);
 				vh.tv.setTextSize(14);
-				vh.tv.setText(list.get(position)[0]);
+				vh.tv.setText(list.get(position));
 			}
 		}
 		return convertView;
 	}
-public void refresh(List<String[]> contents){
+public void refresh(List<String> contents){
 	list.clear();
 	list.addAll(contents);
 	notifyDataSetChanged();
@@ -85,7 +82,6 @@ public void refresh(List<String[]> contents){
 private class ViewHolder{
 	TextView tv;
 	ImageView iv;
-	GridView gv;
 }
 
 

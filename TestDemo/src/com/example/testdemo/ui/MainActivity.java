@@ -45,18 +45,18 @@ OneAdapter oAdapter;
 @Override
 	protected void onResume() {
 		super.onResume();
-		HttpUtil.getOneListRequest("π„÷›",1,new OnOneListFinishListener() {
+		HttpUtil.getOneListRequest("",1,new OnOneListFinishListener() {
 			@Override
 			public void refreshList(List<OneList> onelist) {
 				oAdapter.refresh(onelist);
 			}
 		});
-		HttpUtil.getPlace(new OnPlaceFinishListener() {
+/*		HttpUtil.getPlace(new OnPlaceFinishListener() {
 			@Override
 			public void getPlace(List<Place> placeList) {
-				//Log.i("doc",""+placeList.size());
-				//Log.i("doc",""+placeList);
+				Log.i("doc",""+placeList.size());
+				Log.i("doc",""+placeList);
 			}
-		});
+		});*/
 	}
 }
