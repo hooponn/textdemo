@@ -71,6 +71,10 @@ public class HttpUtil {
 							onelist.setLikeCount(js.getString("likeCount"));
 							onelist.setBookUrl(js.getString("bookUrl"));
 							onelist.setHeadImageUrl(js.getString("headImage"));
+							Document doc=Jsoup.connect(onelist.getBookUrl())
+									.userAgent("Mozilla").timeout(3000).post();
+							Elements elements=doc.select(".main_leftbox").first().select(".text");
+							onelist.setAbout(elements.text());
 							list.add(onelist);
 						}
 					} catch (Exception e) {
@@ -113,7 +117,7 @@ public class HttpUtil {
 		     			if(elements3.size()>0){
 		     			for(int k=0;k<elements3.size();k++){
 		     				String imageUrl=elements3.get(k).select("img").attr("data-src");
-		     				Log.i("SRC","SRC="+imageUrl);
+		     				//Log.i("SRC","SRC="+imageUrl);
 						contents.add(imageUrl);
 		     			}
 		     		}
@@ -199,9 +203,6 @@ public static String getFirstChar(String value) {
     }  
     return first;  
 } 
-
-
-
 
 
 

@@ -7,6 +7,7 @@ public class OneList {
 	private String startTime;
 	private String days;
 	private String likeCount;
+	private String about;
 	public String getTitle() {
 		return title;
 	}
@@ -43,10 +44,18 @@ public class OneList {
 	public void setLikeCount(String likeCount) {
 		this.likeCount = likeCount;
 	}
+	public String getAbout() {
+		return about;
+	}
+	public void setAbout(String about) {
+		this.about = about;
+	}
 	@Override
 	public String toString() {
-		return "OneList [title=" + title + ", bookUrl=" + bookUrl + ", headImageUrl=" + headImageUrl + ", startTime="
-				+ startTime + ", days=" + days + ", likeCount=" + likeCount + "]";
+		return "OneList [title=" + title + ", bookUrl=" + bookUrl
+				+ ", headImageUrl=" + headImageUrl + ", startTime=" + startTime
+				+ ", days=" + days + ", likeCount=" + likeCount + ", about="
+				+ about + "]";
 	}
 	
 }
