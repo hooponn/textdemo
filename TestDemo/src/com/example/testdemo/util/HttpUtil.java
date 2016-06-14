@@ -17,9 +17,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.example.testdemo.bean.DayInfo;
 import com.example.testdemo.bean.Detail;
+import com.example.testdemo.bean.DetailBean;
 import com.example.testdemo.bean.OneList;
 import com.example.testdemo.bean.Place;
+import com.example.testdemo.bean.PlanBox;
+import com.example.testdemo.listener.OnDetailContentFinishListener;
 import com.example.testdemo.listener.OnDetailContentsFinishListener;
 import com.example.testdemo.listener.OnDetailFinishListener;
 import com.example.testdemo.listener.OnOneListFinishListener;
@@ -263,6 +267,104 @@ public static void getDetails(final String url,final OnDetailFinishListener list
 			}
 		}.execute();
 	}
+public static void getDetailContent(final String url,final OnDetailContentFinishListener listener){
+	new AsyncTask<Void,Void,DetailBean>() {
+		DetailBean detailBean=new DetailBean();
+		List<DayInfo> dayInfos=new ArrayList<DayInfo>();
+		List<PlanBox> planBoxs=new ArrayList<PlanBox>();
+		@Override
+		protected DetailBean doInBackground(Void... params) {
+			try {
+				Document doc=Jsoup.connect(url).timeout(2000).post();
+				Elements elements=doc.getElementsByClass("date-content");
+	///////////////////////////////////前言////////////////////////////////////////////
+				for(Element e:elements.get(0).select(".planbox")){//遍历前言片段
+					StringBuffer sb=new StringBuffer();
+					PlanBox planBox=new PlanBox();
+					sb.append(e.select(".tit").text());//前言title
+					sb.append("[");
+					for(int i=0;i<(e.select(".note").select("p").size()-
+							e.select(".note").select("div p").size());i++){
+						sb.append(e.select(".note").select("p").get(i).text());
+						sb.append("[");
+					}
+					for(int i=0;i<e.select(".note_img").select("div.img_link").size();i++){
+						if(e.select(".note_img").select("div.img_link").size()>0){
+						sb.append(e.select(".note_img").select(".img_link").get(i).select(".img").attr("data-src"));
+						sb.append("[");
+						    if(e.select(".note_img").select(".img_link").get(i).select("p").size()>0){
+						    sb.append(e.select(".note_img").select(".img_link").get(i).select("p").text());
+						    sb.append("[");
+						   }
+					    }
+					}
+					planBox.setUrl(url);
+					planBox.setDays(0);
+					planBox.setContent(sb.toString());
+					planBoxs.add(planBox);
+					//Log.i("TAG",""+planBox);				
+				}
+	///////////////////////////////////每天Info////////////////////////////////////////////
+			for(int i=1;i<elements.size()-2;i++){
+				PlanBox planBox=new PlanBox();
+				DayInfo dayInfo=new DayInfo();
+				String dayAndTima=elements.get(i).select(".date").text();//时间
+				String day=dayAndTima.substring
+						(1,dayAndTima.length()-11);
+				String time=dayAndTima.substring
+						(dayAndTima.length()-11,dayAndTima.length());
+				dayInfo.setIndexOfDay("第"+day+"天");
+				dayInfo.setDate("日期:"+time);
+				dayInfo.setUrl(url);
+				StringBuffer sb=new StringBuffer();
+				for(int j=0;j<elements.get(i).select(".planboxday").
+						select(".planbox").size();j++){
+				sb.append(elements.get(i).select(".planboxday").
+						select(".planbox").get(j).select(".tit").text());
+				sb.append("[");
+				}
+				dayInfo.setTitles(sb.toString());
+				dayInfos.add(dayInfo);
+///////////////////////////////////每天片段////////////////////////////////////////////
+				StringBuffer sb2=new StringBuffer();
+				Elements e=elements.get(i).select(".planboxday").select(".planbox").select(".note");//每天片段
+				for(int j=0;j<e.size();j++){
+					for(int k=0;k<(e.get(j).select("p").size()-e.get(j).select("div p").size());k++){
+						sb2.append(e.get(j).select("p").get(k).text());
+						sb2.append("[");
+					}
+					for(int n=0;n<e.get(j).select(".note_img").select("div.img_link").size();n++){
+					if(e.get(j).select(".note_img").select("div.img_link").size()>0){
+						sb2.append(e.get(j).select(".note_img").select("div.img_link")
+								.get(n).select(".img").attr("data-src"));
+						sb2.append("[");
+						if(e.get(j).select(".note_img").select("div.img_link")
+								.get(n).select("p").size()>0){
+							sb2.append(e.get(j).select(".note_img").select("div.img_link")
+									.get(n).select("p").text());
+							sb2.append("[");
+						}
+					}
+				}	
+					planBox.setUrl(url);
+					planBox.setDays(i);
+					planBox.setContent(sb2.toString());
+					planBoxs.add(planBox);
+				}
+			}
+			detailBean.setDayInfo(dayInfos);
+			detailBean.setPlanBox(planBoxs);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return detailBean;
+		}
+		@Override
+		protected void onPostExecute(DetailBean result) {
+			listener.onGetDetailContents(result);
+		}
+	}.execute();
+}
 
 
 }

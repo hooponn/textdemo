@@ -11,6 +11,8 @@ import android.widget.ListView;
 import com.example.testdemo.R;
 import com.example.testdemo.adapter.DetailContentsAdapter;
 import com.example.testdemo.bean.Detail;
+import com.example.testdemo.bean.DetailBean;
+import com.example.testdemo.listener.OnDetailContentFinishListener;
 import com.example.testdemo.listener.OnDetailContentsFinishListener;
 import com.example.testdemo.listener.OnDetailFinishListener;
 import com.example.testdemo.util.HttpUtil;
@@ -42,13 +44,18 @@ public class DetailActivity extends Activity {
 				}
 			}
 		});*/
-        HttpUtil.getDetails(url,new OnDetailFinishListener() {
+       /* HttpUtil.getDetails(url,new OnDetailFinishListener() {
 			@Override
 			public void onGetDetailContents(List<Detail> result) {
 				for(Detail d:result){
 					Log.i("LIST","List="+d.toString());
 				}
-				//Log.i("LIST","List="+result);
+			}
+		});*/
+		HttpUtil.getDetailContent(url, new OnDetailContentFinishListener() {
+			@Override
+			public void onGetDetailContents(DetailBean result) {
+				Log.i("TAG",result.getDayInfo()+"\n"+result.getPlanBox());
 			}
 		});
 	}
