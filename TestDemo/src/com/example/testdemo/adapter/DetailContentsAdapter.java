@@ -3,6 +3,7 @@ package com.example.testdemo.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.text.TextUtils.TruncateAt;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,10 +74,14 @@ public class DetailContentsAdapter extends BaseAdapter {
 			if(list.get(position)[0].contains("µÚ")&&list.get(position)[0].length()<5){
 				vh.tv.setTextColor(0xffff8866);
 				vh.tv.setTextSize(20);
+				vh.tv.setMaxLines(8);
+				vh.tv.setEllipsize(TruncateAt.END);
 				vh.tv.setText(list.get(position)[0]);
 			}else{
 				vh.tv.setTextColor(0xff666699);
 				vh.tv.setTextSize(14);
+				vh.tv.setMaxLines(8);
+				vh.tv.setEllipsize(TruncateAt.END);
 				vh.tv.setText(list.get(position)[0]);
 			}
 		}

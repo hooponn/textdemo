@@ -17,9 +17,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.example.testdemo.bean.Detail;
 import com.example.testdemo.bean.OneList;
 import com.example.testdemo.bean.Place;
 import com.example.testdemo.listener.OnDetailContentsFinishListener;
+import com.example.testdemo.listener.OnDetailFinishListener;
 import com.example.testdemo.listener.OnOneListFinishListener;
 import com.example.testdemo.listener.OnPlaceFinishListener;
 
@@ -71,10 +73,10 @@ public class HttpUtil {
 						onelist.setLikeCount(js.getString("likeCount"));
 						onelist.setBookUrl(js.getString("bookUrl"));
 						onelist.setHeadImageUrl(js.getString("headImage"));
-						Document doc=Jsoup.connect(onelist.getBookUrl())
+						/*Document doc=Jsoup.connect(onelist.getBookUrl())
 								.userAgent("Mozilla").timeout(2000).post();
 						Elements elements=doc.select(".main_leftbox").first().select(".text");
-						onelist.setAbout("\t\t"+elements.text());
+						onelist.setAbout("\t\t"+elements.text());*/
 						list.add(onelist);
 					}
 				} catch (Exception e) {
@@ -212,7 +214,55 @@ public class HttpUtil {
 		}  
 		return first;  
 	} 
-
+public static void getDetails(final String url,final OnDetailFinishListener listener){
+		new AsyncTask<Void,Void,List<Detail>>() {
+			List<Detail> details=new ArrayList<Detail>();
+			@Override
+			protected List<Detail> doInBackground(Void... params) {
+				try {
+					Document doc=Jsoup.connect(url).timeout(2000).post();
+					Elements elements=doc.getElementsByClass("date-content");
+					for(int i=1;i<elements.size()-2;i++){
+						Detail detail=new Detail();
+						//////////////////////////////////////时间/////////////////////////
+						String dayAndTima=elements.get(i).select(".date").text();
+						String day=dayAndTima.substring
+								(0,dayAndTima.length()-11);
+						String time=dayAndTima.substring
+								(dayAndTima.length()-11,dayAndTima.length());
+						detail.setDay(("第"+day.substring(1,day.length())+"天"));
+						detail.setDate("日期:"+time);
+						///////////////////////// 内容//////////////////////////////////////////
+						Elements elements2=elements.select(".planboxday").get(i-1).select(".planbox");
+						StringBuilder sb=new StringBuilder();
+						for(int j=0;j<elements2.size();j++){
+							String content=elements2.get(j).text();
+							String[] ct=content.split("加载更多图片");
+							sb.append(ct[0]);
+							sb.append("[");
+							Elements elements3=elements2.get(j).select(".img_link");
+							if(elements3.size()>0){
+								for(int k=0;k<elements3.size();k++){
+									String imageUrl=elements3.get(k).select("img").attr("data-src");
+									sb.append(imageUrl);
+									sb.append("[");
+								}
+							}
+						}
+						detail.setContent(sb.toString());
+						details.add(detail);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return details;
+			}
+			@Override
+			protected void onPostExecute(List<Detail> result) {
+				listener.onGetDetailContents(result);
+			}
+		}.execute();
+	}
 
 
 }
