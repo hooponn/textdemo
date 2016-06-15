@@ -10,11 +10,10 @@ import android.widget.ListView;
 
 import com.example.testdemo.R;
 import com.example.testdemo.adapter.DetailContentsAdapter;
-import com.example.testdemo.bean.Detail;
+import com.example.testdemo.bean.DayInfo;
 import com.example.testdemo.bean.DetailBean;
+import com.example.testdemo.bean.PlanBox;
 import com.example.testdemo.listener.OnDetailContentFinishListener;
-import com.example.testdemo.listener.OnDetailContentsFinishListener;
-import com.example.testdemo.listener.OnDetailFinishListener;
 import com.example.testdemo.util.HttpUtil;
 
 public class DetailActivity extends Activity {
@@ -55,7 +54,12 @@ public class DetailActivity extends Activity {
 		HttpUtil.getDetailContent(url, new OnDetailContentFinishListener() {
 			@Override
 			public void onGetDetailContents(DetailBean result) {
-				Log.i("TAG",result.getDayInfo()+"\n"+result.getPlanBox());
+				for(DayInfo di:result.getDayInfo()){
+					Log.i("TAG",di.toString());
+				}
+				for(PlanBox pb:result.getPlanBox()){
+					Log.i("TAG",pb.toString());
+				}
 			}
 		});
 	}

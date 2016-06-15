@@ -87,7 +87,7 @@ public class HttpUtil {
 					e.printStackTrace();
 				}
 				//	Log.i("TAG","LIST="+list);
-				return list;
+				return list; 
 			}
 			@Override
 			protected void onPostExecute(List<OneList> result) {
@@ -275,8 +275,11 @@ public static void getDetailContent(final String url,final OnDetailContentFinish
 		@Override
 		protected DetailBean doInBackground(Void... params) {
 			try {
+				long st=System.currentTimeMillis();
 				Document doc=Jsoup.connect(url).timeout(2000).post();
 				Elements elements=doc.getElementsByClass("date-content");
+				long en=System.currentTimeMillis();
+				Log.i("TIME","TIME="+(en-st));
 	///////////////////////////////////«∞—‘////////////////////////////////////////////
 				for(Element e:elements.get(0).select(".planbox")){//±È¿˙«∞—‘∆¨∂Œ
 					StringBuffer sb=new StringBuffer();
