@@ -5,6 +5,8 @@ public class Place {
 private String city;
 private String city_url;
 private String sortLetter;
+private String upperCase;
+private String lowerCase;
 public String getCity() {
 	return city;
 }
@@ -23,10 +25,23 @@ public String getSortLetter() {
 public void setSortLetter(String sortLetter) {
 	this.sortLetter = sortLetter;
 }
+public String getUpperCase() {
+	return upperCase;
+}
+public void setUpperCase(String upperCase) {
+	this.upperCase = upperCase;
+}
+public String getLowerCase() {
+	return lowerCase;
+}
+public void setLowerCase(String lowerCase) {
+	this.lowerCase = lowerCase;
+}
 @Override
 public String toString() {
 	return "Place [city=" + city + ", city_url=" + city_url + ", sortLetter="
-			+ sortLetter + "]";
+			+ sortLetter + ", upperCase=" + upperCase + ", lowerCase="
+			+ lowerCase + "]";
 }
 
 }

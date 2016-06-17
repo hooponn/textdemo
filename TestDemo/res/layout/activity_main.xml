@@ -4,14 +4,34 @@
     android:layout_height="match_parent"
     tools:context="com.example.testdemo.ui.MainActivity" >
 
+    <TextView
+        android:id="@+id/main_tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ff44aa44"
+        android:gravity="center"
+        android:textColor="#ffffffff"
+        android:textSize="18sp" 
+        android:text="TestList"/>
+
     <ListView
         android:id="@+id/lv_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:dividerHeight="10dp"
-        android:divider="#ffadadad" >
-
+        android:layout_below="@+id/main_tv_title"
+        android:divider="#ffadadad"
+        android:dividerHeight="10dp" >
     </ListView>
+
+    <Button
+        android:id="@+id/main_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lv_one"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@null"
+        android:text="搜索"
+        android:textColor="#ffffffff" />
 
 </RelativeLayout>
