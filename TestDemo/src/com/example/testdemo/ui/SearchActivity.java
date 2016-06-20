@@ -21,7 +21,6 @@ List<Place> places;
 List<Place> list;
 EditText et_search;
 ListView lv;
-String[] cities=null;
 SearchAdapter sa;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
