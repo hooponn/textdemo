@@ -44,8 +44,9 @@ SearchAdapter sa;
 			@Override
 			public void afterTextChanged(Editable s) {
 				if(s.toString().length()>0){
+					list.clear();
 					for(Place p:places){
-						int i;
+						/*int i;
 						for(i=0;i<=p.getCity().length();i++){
 							if(s.toString().equals(p.getCity().subSequence(0,i))||
 									s.toString().equals(p.getLowerCase().substring(0,i))||
@@ -53,12 +54,17 @@ SearchAdapter sa;
 							{
 								list.add(p);
 							}
+						}*/
+						if(p.getCity().contains(s.toString())||
+								p.getLowerCase().contains(s.toString())||
+								p.getUpperCase().contains(s.toString())){
+							list.add(p);
 						}
 					}
 				}else{
 				list.clear();
 				}
-				sa.refresh(list);
+				sa.refresh(list,s.toString());
 			}
 		});
 	}
